@@ -1,0 +1,60 @@
+// const mongoose = require('mongoose');
+
+// const userSchema = new mongoose.Schema({
+//   first_name: { type: String, required: true },
+//   last_name:  { type: String, required: true },
+//   email:      { type: String, required: true, unique: true },
+//   password:   { type: String }, // facultatif si authType = oauth
+
+//   authType:       { type: String, enum: ['local', 'oauth'], default: 'local' },
+//   oauthProvider:  { type: String, enum: ['google', 'facebook', 'apple', null], default: null },
+
+//   preferences: {
+//     notificationsActivated: { type: Boolean, default: true }
+//   },
+
+//   subscription: {
+//     type:       { type: String, enum: ['basic', 'premium', 'pro'], default: 'basic' },
+//     date_start: { type: Date },
+//     date_end:   { type: Date },
+//     status:     { type: String, enum: ['active', 'inactive', 'expired'], default: 'inactive' }
+//   },
+
+//   createdAt: { type: Date, default: Date.now }
+// });
+
+// module.exports = mongoose.model('User', userSchema);
+
+
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
+const userSchema = new mongoose.Schema({
+  first_name: { type: String, required: true },
+  last_name:  { type: String, required: true },
+  email:      { type: String, required: true, unique: true },
+  password:   { type: String }, 
+  authType:   { type: String, enum: ['local', 'oauth'], default: 'local' },
+  oauthProvider: { type: String, enum: ['google', 'facebook', null], default: null },
+  preferences: {
+    notificationsActivated: { type: Boolean, default: true }
+  },
+  subscription: {
+    type:       { type: String, enum: ['basic', 'premium', 'pro'], default: 'basic' },
+    date_start: { type: Date },
+    date_end:   { type: Date },
+    status:     { type: String, enum: ['active', 'inactive', 'expired'], default: 'inactive' }
+  },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// Hash password only if it's new or modified
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password') && this.password) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  next();
+});
+
+module.exports = mongoose.model('User', userSchema);
