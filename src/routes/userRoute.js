@@ -34,7 +34,8 @@ router.post('/oauth', async (req, res) => {
       authType: 'oauth',
       oauthProvider,
       preferences: { notificationsActivated: true },
-      subscription: { type: 'basic', status: 'active' }
+      subscription: { type: 'basic', status: 'active' },
+      emailVerified: true 
     });
 
     res.status(201).json(user);
