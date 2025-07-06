@@ -1,31 +1,3 @@
-// const mongoose = require('mongoose');
-
-// const userSchema = new mongoose.Schema({
-//   first_name: { type: String, required: true },
-//   last_name:  { type: String, required: true },
-//   email:      { type: String, required: true, unique: true },
-//   password:   { type: String }, // facultatif si authType = oauth
-
-//   authType:       { type: String, enum: ['local', 'oauth'], default: 'local' },
-//   oauthProvider:  { type: String, enum: ['google', 'facebook', 'apple', null], default: null },
-
-//   preferences: {
-//     notificationsActivated: { type: Boolean, default: true }
-//   },
-
-//   subscription: {
-//     type:       { type: String, enum: ['basic', 'premium', 'pro'], default: 'basic' },
-//     date_start: { type: Date },
-//     date_end:   { type: Date },
-//     status:     { type: String, enum: ['active', 'inactive', 'expired'], default: 'inactive' }
-//   },
-
-//   createdAt: { type: Date, default: Date.now }
-// });
-
-// module.exports = mongoose.model('User', userSchema);
-
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -45,7 +17,12 @@ const userSchema = new mongoose.Schema({
     date_end:   { type: Date },
     status:     { type: String, enum: ['active', 'inactive', 'expired'], default: 'inactive' }
   },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  emailVerified: {
+  type: Boolean,
+  default: false
+}
+
 });
 
 // Hash password only if it's new or modified
