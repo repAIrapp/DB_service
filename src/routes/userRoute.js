@@ -1,83 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-// const {
-//   createUser,
-//   getUserByEmail,
-//   getUserById,
-//   updateUserPreferences
-// } = require('../services/userService');
-
-// // Créer un utilisateur
-// router.post('/', async (req, res) => {
-//   try {
-//     const user = await createUser(req.body);
-//     res.status(201).json(user);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// // Récupérer un utilisateur par email
-// router.get('/by-email', async (req, res) => {
-//   try {
-//     const user = await getUserByEmail(req.query.email);
-//     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
-//     res.json(user);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// // Récupérer un utilisateur par ID
-// router.get('/:id', async (req, res) => {
-//   try {
-//     const user = await getUserById(req.params.id);
-//     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
-//     res.json(user);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// // Mettre à jour les préférences
-// router.patch('/:id/preferences', async (req, res) => {
-//   try {
-//     const user = await updateUserPreferences(req.params.id, req.body);
-//     res.json(user);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-// // Créer un utilisateur via OAuth (appelé par le service OAuth)
-// router.post('/oauth', async (req, res) => {
-//   try {
-//     const { email, first_name, last_name, oauthProvider } = req.body;
-
-//     // Vérifie s’il existe déjà
-//     const existing = await getUserByEmail(email);
-//     if (existing) return res.status(200).json(existing); // déjà enregistré
-
-//     const user = await createUser({
-//       email,
-//       first_name,
-//       last_name,
-//       authType: 'oauth',
-//       oauthProvider,
-//       preferences: { notificationsActivated: true },
-//       subscription: { type: 'basic', status: 'active' }
-//     });
-
-//     res.status(201).json(user);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-
-// module.exports = router;
-
-
-
 const express = require('express');
 const router = express.Router();
 const {
@@ -180,6 +100,20 @@ router.patch('/subscription/:userId', async (req, res) => {
     res.json({ message: 'Abonnement mis à jour', subscription: user.subscription });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+// ✅ Vérifier l'email après clic sur le lien de confirmation
+router.patch('/:id/verify-email', async (req, res) => {
+  try {
+    const user = await getUserById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
+
+    user.emailVerified = true;
+    await user.save();
+
+    res.json({ message: 'Email vérifié avec succès' });
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur lors de la vérification de l’email' });
   }
 });
 
