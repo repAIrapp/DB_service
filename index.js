@@ -48,7 +48,7 @@ const DBRequestsCounter = new client.Counter({
 });
 
 // Enregistre la métrique dans le registre
-register.registerMetric(oauthRequestsCounter);
+register.registerMetric(DBRequestsCounter);
 
 // Collecte les métriques système par défaut
 client.collectDefaultMetrics({ register });
