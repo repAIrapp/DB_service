@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
       })
       console.log("📧 Email de confirmation envoyé à", user.email)
     } catch (err) {
-      console.error("❌ Erreur envoi email confirmation :", err.message)
+      console.error("❌ Erreur envoi email confirmation :", err)
     }
 
     res.status(201).json(user);
