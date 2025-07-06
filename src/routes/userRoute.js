@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const axios = require("axios")
+
 const {
   createUser,
   getUserByEmail,
@@ -13,11 +15,26 @@ const verifyToken = require('../middleware/authMiddleware');
 router.post('/', async (req, res) => {
   try {
     const user = await createUser(req.body);
+
+    // 🔔 Envoi email de confirmation
+    try {
+      const confirmationLink = `http://localhost:3000/verify?userId=${user._id}`
+      console.log("📤 Envoi de l'email à", user.email, "avec lien", confirmationLink);
+      await axios.post('http://localhost:3005/api/email/confirmation', {
+        email: user.email,
+        confirmationLink,
+      })
+      console.log("📧 Email de confirmation envoyé à", user.email)
+    } catch (err) {
+      console.error("❌ Erreur envoi email confirmation :", err.message)
+    }
+
     res.status(201).json(user);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 // ✅ Créer un utilisateur via OAuth (appelé par le service OAuth)
 router.post('/oauth', async (req, res) => {
