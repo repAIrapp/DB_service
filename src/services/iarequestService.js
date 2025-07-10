@@ -1,22 +1,22 @@
 const IARequest = require('../models/IArequest');
 
-// Créer une requête IA
+// créer une requete ia
 async function createIARequest(data) {
   const iaRequest = new IARequest(data);
   return await iaRequest.save();
 }
 
-// Récupérer les requêtes IA par utilisateur
+// récupérer les requêtes ia par utilisateur
 async function getIARequestsByUser(userId) {
   return await IARequest.find({ userId }).populate('objectrepairedId');
 }
 
-// Récupérer une requête IA par ID
+// récupérer une requête ia par ID
 async function getIARequestById(id) {
   return await IARequest.findById(id).populate('objectrepairedId');
 }
 
-// Mettre à jour le résultat généré par l’IA
+// mettre à jour le résultat généré par l’ia
 async function updateIAResult(id, resultIA) {
   return await IARequest.findByIdAndUpdate(id, { resultIA }, { new: true });
 }

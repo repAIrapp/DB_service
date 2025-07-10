@@ -13,7 +13,7 @@ const notificationSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['info', 'warning', 'success', 'error', 'status_update'], // extensible selon ton besoin
+    enum: ['info', 'warning', 'success', 'error', 'status_update'], 
     required: true
   },
   message: {
@@ -26,7 +26,7 @@ const notificationSchema = new mongoose.Schema({
   },
   objectStatus: {
     type: String,
-    enum: ['pending', 'in_progress', 'completed', 'cancelled'], // doit refléter les statuts possibles de l’objet
+    enum: ['pending', 'in_progress', 'completed', 'cancelled'], 
     default: 'pending'
   }
 });

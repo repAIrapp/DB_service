@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const objectRepairedSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // 👈 référence à la collection users
+    ref: 'User', 
     required: true
   },
   objectname: {
@@ -15,7 +15,7 @@ const objectRepairedSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'in_progress', 'completed', 'cancelled'], // tu peux adapter
+    enum: ['pending', 'in_progress', 'completed', 'cancelled'], 
     default: 'pending'
   },
   creationDate: {
@@ -28,7 +28,6 @@ const objectRepairedSchema = new mongoose.Schema({
   }
 });
 
-// Met à jour automatiquement modificationDate avant chaque save
 objectRepairedSchema.pre('save', function(next) {
   this.modificationDate = new Date();
   next();

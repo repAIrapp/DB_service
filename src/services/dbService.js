@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const RepairObject = require('../models/Objectrepaired');
 
-// Utilisateur
+// User
 async function createUser(data) {
   const user = new User(data);
   return await user.save();

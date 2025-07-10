@@ -11,22 +11,18 @@ const {
 
 const verifyToken = require('../middleware/authMiddleware');
 
-// ✅ Créer un utilisateur (local)
+// créer un utilisateur (local)
 router.post('/', async (req, res) => {
   try {
     const user = await createUser(req.body);
-
-    // 🔔 Envoi email de confirmation
     try {
       const confirmationLink = `http://localhost:3000/verify?userId=${user._id}`
-      console.log("📤 Envoi de l'email à", user.email, "avec lien", confirmationLink);
       await axios.post('http://localhost:3005/api/email/confirmation', {
         email: user.email,
         confirmationLink,
       })
-      console.log("📧 Email de confirmation envoyé à", user.email)
     } catch (err) {
-      console.error("❌ Erreur envoi email confirmation :", err)
+      console.error("Erreur envoi email confirmation :", err)
     }
 
     res.status(201).json(user);
@@ -35,8 +31,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-// ✅ Créer un utilisateur via OAuth (appelé par le service OAuth)
 router.post('/oauth', async (req, res) => {
   try {
     const { email, first_name, last_name, oauthProvider } = req.body;
@@ -61,7 +55,7 @@ router.post('/oauth', async (req, res) => {
   }
 });
 
-// 🔍 Récupérer un utilisateur par email (pas besoin de JWT)
+//récupérer un utilisateur par email (pas besoin de JWT)
 router.get('/by-email', async (req, res) => {
   try {
     const user = await getUserByEmail(req.query.email);
@@ -72,7 +66,7 @@ router.get('/by-email', async (req, res) => {
   }
 });
 
-// 🔐 Récupérer un utilisateur par ID (protégé)
+// récupérer un utilisateur par ID (protected)
 router.get('/:id', verifyToken, async (req, res) => {
   if (req.user.id !== req.params.id) {
     return res.status(403).json({ error: 'Accès non autorisé' });
@@ -87,7 +81,7 @@ router.get('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// 🔐 Mettre à jour les préférences (protégé)
+// mettre à jour les préférences (protégé)
 router.patch('/:id/preferences', verifyToken, async (req, res) => {
   if (req.user.id !== req.params.id) {
     return res.status(403).json({ error: 'Accès non autorisé' });
@@ -100,7 +94,7 @@ router.patch('/:id/preferences', verifyToken, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-// 🔁 Mettre à jour l'abonnement (appelé après paiement)
+// mettre à jour l'abonnement (appelé après paiement)
 router.patch('/subscription/:userId', async (req, res) => {
   try {
     const { type, status, date_start, date_end } = req.body;
@@ -120,7 +114,7 @@ router.patch('/subscription/:userId', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ✅ Vérifier l'email après clic sur le lien de confirmation
+// vérifier l'email après clic sur le lien de confirmation
 router.patch('/:id/verify-email', async (req, res) => {
   try {
     const user = await getUserById(req.params.id);

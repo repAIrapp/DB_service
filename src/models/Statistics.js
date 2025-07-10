@@ -16,7 +16,7 @@ const statisticsSchema = new mongoose.Schema({
     default: Date.now
   },
   details: {
-    type: mongoose.Schema.Types.Mixed, // permet de stocker tout type d’objet
+    type: mongoose.Schema.Types.Mixed, 
     default: {}
   }
 });

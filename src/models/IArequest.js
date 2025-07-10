@@ -20,7 +20,7 @@ const iaRequestSchema = new mongoose.Schema({
     required: true
   },
   resultIA: {
-    type: String // résultat retourné par l'IA (description, solution...)
+    type: String 
   },
   date: {
     type: Date,

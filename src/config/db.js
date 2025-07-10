@@ -34,7 +34,6 @@ const disconnectDB = async () => {
     }
 };
 
-// ✅ Exporte les fonctions en CommonJS
 module.exports = {
     connectDB,
     disconnectDB

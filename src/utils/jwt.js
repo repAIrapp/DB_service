@@ -7,7 +7,7 @@ function generateToken(user) {
       id: user._id,
       email: user.email,
       authType: user.authType,
-      role: user.role || 'user' // si tu veux gérer les rôles plus tard
+      role: user.role || 'user' 
     },
     SECRET,
     { expiresIn: '7d' }

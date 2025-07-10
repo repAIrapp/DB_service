@@ -9,7 +9,7 @@ function verifyToken(req, res, next) {
   const token = authHeader.split(' ')[1];
   try {
     const payload = jwt.verify(token, SECRET);
-    req.user = payload; // tu peux accéder à req.user dans les routes
+    req.user = payload; 
     next();
   } catch (err) {
     return res.status(403).json({ error: 'Token invalide' });

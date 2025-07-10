@@ -1,6 +1,6 @@
 const User = require('../models/User');
 
-// Créer un utilisateur
+// créer un utilisateur
 async function createUser(data) {
   const existing = await User.findOne({ email: data.email });
   if (existing) throw new Error('Email déjà utilisé');
@@ -9,17 +9,17 @@ async function createUser(data) {
   return await user.save();
 }
 
-// Récupérer un utilisateur par email
+// récupérer un utilisateur par email
 async function getUserByEmail(email) {
   return await User.findOne({ email });
 }
 
-// Récupérer un utilisateur par ID
+// récupérer un utilisateur par ID
 async function getUserById(id) {
   return await User.findById(id);
 }
 
-// Mettre à jour les préférences
+// mettre à jour les préférences
 async function updateUserPreferences(id, preferences) {
   return await User.findByIdAndUpdate(id, { preferences }, { new: true });
 }
