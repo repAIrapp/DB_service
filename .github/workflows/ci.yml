@@ -4,12 +4,12 @@ on:
   push:
     branches: [dev, main]
     paths:
-      - 'db_service/**'
+      - 'DB_service/**'
       - '.github/workflows/ci.yml'
   pull_request:
     branches: [dev, main]
     paths:
-      - 'db_service/**'
+      - 'DB_service/**'
       - '.github/workflows/ci.yml'
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: db_service
+        working-directory: DB_service
 
     steps:
       - name: Checkout
