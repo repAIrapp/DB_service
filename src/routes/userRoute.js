@@ -124,7 +124,7 @@ router.patch('/:id/verify-email', async (req, res) => {
     await user.save();
 
     res.json({ message: 'Email vérifié avec succès' });
-  } catch (err) {
+  } catch (err) { // eslint-disable-line no-unused-vars
     res.status(500).json({ error: 'Erreur lors de la vérification de l’email' });
   }
 });
