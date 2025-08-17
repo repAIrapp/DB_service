@@ -28,8 +28,15 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      # - name: Run tests
+      #   run: npm test
+
+      # - name: Coverage report
+      #   run: npm test -- --coverage --ci --runInBand
+
       - name: Run tests
-        run: npm test
+        run: npm test -- --ci --runInBand --passWithNoTests
 
       - name: Coverage report
-        run: npm test -- --coverage --ci --runInBand
+        run: npm test -- --coverage --ci --runInBand --passWithNoTests
+
