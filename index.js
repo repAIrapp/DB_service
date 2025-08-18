@@ -67,38 +67,18 @@
 
 
 
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 
-const express = require("express");
-const { connectDB } = require("./src/config/db.js");
-const { app, register } = require("./app");
+const { app } = require("./app");
+const { connectDB } = require("./src/config/db");
 
 const PORT = process.env.PORT || 3001;
-const METRICS_PORT = process.env.METRICS_PORT || 9101;
 
-(async () => {
-  try {
-    // Connect DB once at boot
-    await connectDB();
+// Connexion DB
+connectDB();
 
-    // Main HTTP server
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`DB service running on http://localhost:${PORT}`);
-    });
-
-    // Separate metrics server (optional, Prometheus-friendly)
-    const metricsApp = express();
-    metricsApp.get("/metrics", async (_req, res) => {
-      res.setHeader("Content-Type", register.contentType);
-      res.send(await register.metrics());
-    });
-    metricsApp.listen(METRICS_PORT, () => {
-      console.log(
-        `DB service metrics exposed on http://localhost:${METRICS_PORT}/metrics`
-      );
-    });
-  } catch (err) {
-    console.error("Failed to start DB service:", err);
-    process.exit(1);
-  }
-})();
+// Démarrer le serveur
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
