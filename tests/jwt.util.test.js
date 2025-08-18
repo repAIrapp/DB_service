@@ -43,6 +43,24 @@ describe('utils/jwt', () => {
     expect(options).toEqual({ expiresIn: '7d' })
   })
 
+  test('generateToken : assigne "user" par défaut si role est absent', () => {
+    jwtLib.sign.mockReturnValue('default.role.token')
+
+    const userNoRole = {
+      _id: 'u456',
+      email: 'no@role.com',
+      authType: 'local',
+    }
+
+    const token = generateToken(userNoRole)
+
+    expect(token).toBe('default.role.token')
+    expect(jwtLib.sign).toHaveBeenCalledTimes(1)
+
+    const [payload] = jwtLib.sign.mock.calls[0]
+    expect(payload.role).toBe('user') // branche couverte
+  })
+
   test('verifyToken : retourne le payload décodé', () => {
     const decoded = { id: 'u123', email: 'a@b.com' }
     jwtLib.verify.mockReturnValue(decoded)
