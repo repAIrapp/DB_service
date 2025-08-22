@@ -34,6 +34,7 @@ test('POST /api/users crée un user local et envoie un email de confirmation', a
       email: 'a@b.com',
       password: 'secret',
     });
+console.log("👉 RES BODY:", res.body);  // ← Ajoute cette ligne
 
   expect(res.status).toBe(201);
   expect(res.body).toHaveProperty('_id');
@@ -96,7 +97,7 @@ test('GET /api/users/by-email trouve l’utilisateur', async () => {
     first_name: 'Ann',
     last_name: 'Bee',
     email: 'find@me.com',
-    password: 'x',
+    password: 'supersecret',
   });
 
   const ok = await request(app).get(`${base}/by-email`).query({ email: 'find@me.com' });
@@ -112,7 +113,7 @@ test('GET /api/users/:id -> 403 si x-user-id ≠ id', async () => {
     first_name: 'Ann',
     last_name: 'Bee',
     email: 'f@f.com',
-    password: 'x',
+    password: 'strongpass',
   });
   const id = created.body._id;
 
@@ -125,7 +126,7 @@ test('GET /api/users/:id -> 200 si x-user-id = id', async () => {
     first_name: 'Ann',
     last_name: 'Bee',
     email: 'g@g.com',
-    password: 'x',
+    password: 'strongpass',
   });
   const id = created.body._id;
 
@@ -139,7 +140,7 @@ test('PATCH /api/users/:id/preferences met à jour (protégé)', async () => {
     first_name: 'Pref',
     last_name: 'User',
     email: 'p@p.com',
-    password: 'x',
+    password: 'strongpass',
   });
   const id = created.body._id;
 
@@ -157,7 +158,7 @@ test('PATCH /api/users/subscription/:userId met à jour abonnement', async () =>
     first_name: 'Sub',
     last_name: 'User',
     email: 'sub@u.com',
-    password: 'x',
+    password: 'strongpass',
   });
   const id = created.body._id;
 
@@ -181,7 +182,7 @@ test('PATCH /api/users/:id/verify-email bascule emailVerified=true', async () =>
     first_name: 'Verify',
     last_name: 'Me',
     email: 'ver@me.com',
-    password: 'x',
+    password: 'strongpass',
   });
   const id = created.body._id;
 

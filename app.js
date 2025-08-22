@@ -3,10 +3,23 @@ const express = require("express");
 const cors = require("cors");
 const client = require("prom-client");
 const router = require("./src/routes/router.js");
+const helmet = require("helmet");
+const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
+const rateLimit = require("express-rate-limit");
+
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limite 100 requêtes par IP
+});
+app.use(limiter);
+app.use(mongoSanitize());
+
 
 // Middleware
+app.use(helmet());
 app.use(express.json());
 app.use(cors());
 
