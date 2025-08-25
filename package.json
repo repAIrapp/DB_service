@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "lint": "eslint .",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "build": "echo 'Pas de build nécessaire pour ce service'"
   },
   "author": "",
   "license": "ISC",
