@@ -40,14 +40,13 @@ router.post('/signup', async (req, res) => {
       
       try {
         const confirmationLink = `http://localhost:3000/verify?userId=${newUser._id}`;
-       // console.log(" Envoi de l'e-mail à", newUser.email, "avec lien", confirmationLink);
-
+       
         await axios.post('http://localhost:3005/api/email/confirmation', {
           email: newUser.email,
           confirmationLink,
         });
 
-        //console.log("Email de confirmation envoyé !");
+        
       } catch (err) {
         console.error("Erreur envoi e-mail confirmation :", err.message);
       }

@@ -1,4 +1,4 @@
-// tests/object.route.unit.test.js
+
 const objectRouter = require('../src/routes/objectRoute')
 
 // On **ne** teste pas verifyToken ici (testé ailleurs) : on appelle directement le handler final.

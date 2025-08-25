@@ -1,4 +1,4 @@
-// ESLint v9 - flat config (CommonJS)
+
 const js = require("@eslint/js");
 const globals = require("globals");
 
@@ -21,7 +21,6 @@ module.exports = [
     },
     rules: {
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
-      // Laisse les console.log en back (tu peux passer à 'warn' si tu veux)
       "no-console": "off"
     },
   },

@@ -23,7 +23,7 @@ afterEach(async () => {
 });
 afterAll(closeTestDB);
 
-const base = '/api/users'; // adapte si ton router est monté différemment
+const base = '/api/users';
 
 test('POST /api/users crée un user local et envoie un email de confirmation', async () => {
   const res = await request(app)
@@ -34,7 +34,7 @@ test('POST /api/users crée un user local et envoie un email de confirmation', a
       email: 'a@b.com',
       password: 'secret',
     });
-console.log("👉 RES BODY:", res.body);  // ← Ajoute cette ligne
+console.log(" RES BODY:", res.body);  
 
   expect(res.status).toBe(201);
   expect(res.body).toHaveProperty('_id');

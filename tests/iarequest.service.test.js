@@ -1,4 +1,3 @@
-// tests/iarequest.service.test.js
 
 // --- Mock du modèle mongoose : une fonction jest.fn() + méthodes statiques
 jest.mock('../src/models/IArequest', () => {
@@ -19,7 +18,7 @@ describe('iarequestService', () => {
 
   test('createIARequest appelle save() sur le modèle', async () => {
     const saveMock = jest.fn().mockResolvedValue({ _id: 'id1', foo: 'bar' });
-    IARequest.mockImplementation(() => ({ save: saveMock })); // <-- fonctionne maintenant
+    IARequest.mockImplementation(() => ({ save: saveMock })); 
 
     const data = { foo: 'bar' };
     const res = await service.createIARequest(data);

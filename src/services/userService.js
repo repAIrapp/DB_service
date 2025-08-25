@@ -1,13 +1,5 @@
 const User = require('../models/User');
 
-// créer un utilisateur
-// async function createUser(data) {
-//   const existing = await User.findOne({ email: data.email });
-//   if (existing) throw new Error('Email déjà utilisé');
-
-//   const user = new User(data);
-//   return await user.save();
-// }
 async function createUser(data) {
   try {
     console.log("createUser input:", data);

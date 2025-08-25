@@ -1,4 +1,4 @@
-// tests/auth.middleware.test.js
+
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../src/middleware/authMiddleware');
 

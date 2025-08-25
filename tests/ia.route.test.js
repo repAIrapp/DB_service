@@ -1,15 +1,15 @@
-// tests/ia.route.test.js
+
 const express = require('express');
 const request = require('supertest');
 
-// 👉 mock du middleware d’auth pour les routes protégées
+// mock du middleware d’auth pour les routes protégées
 jest.mock('../src/middleware/authMiddleware', () => (req, _res, next) => {
   // simule un user authentifié
   req.user = { id: req.headers['x-user-id'] || 'u1' };
   next();
 });
 
-// 👉 mock du service appelé par la route
+//  mock du service appelé par la route
 jest.mock('../src/services/iarequestService', () => ({
   createIARequest: jest.fn(),
   getIARequestsByUser: jest.fn(),
@@ -33,7 +33,7 @@ test('POST /ia (protégé) → 201 et appelle createIARequest', async () => {
 
   const res = await request(app)
     .post('/ia')
-    .set('x-user-id', 'u1') // pour notre mock d’auth
+    .set('x-user-id', 'u1') 
     .send({ userId: 'u1', input: 'img.jpg' });
 
   expect(res.status).toBe(201);

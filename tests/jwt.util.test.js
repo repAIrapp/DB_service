@@ -1,7 +1,7 @@
-// tests/jwt.util.test.js
+
 const jwtLib = require('jsonwebtoken')
 
-// ⚠️ Mock total de jsonwebtoken
+//  Mock total de jsonwebtoken
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(),
   verify: jest.fn(),

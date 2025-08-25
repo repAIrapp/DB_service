@@ -61,8 +61,8 @@ router.post(
 
       res.status(201).json(user);
     } catch (err) {
-  console.error("❌ Erreur création user :", err); 
-  console.log("🔥 ERREUR CAPTURÉE DANS ROUTE :", err.message, err.stack);
+  console.error("Erreur création user :", err); 
+  console.log("ERREUR CAPTURÉE DANS ROUTE :", err.message, err.stack);
   res.status(500).json({
     error: err.message,
     stack: err.stack

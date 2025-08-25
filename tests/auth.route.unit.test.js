@@ -1,4 +1,4 @@
-// tests/auth.route.unit.test.js
+
 const authRouter = require('../src/routes/authRoute')
 
 // Mocks des dépendances
