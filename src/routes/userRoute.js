@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const axios = require("axios")
+const axios = require("axios");
+const { body, validationResult } = require("express-validator");
 
 const {
   createUser,
@@ -12,24 +13,64 @@ const {
 const verifyToken = require('../middleware/authMiddleware');
 
 // créer un utilisateur (local)
-router.post('/', async (req, res) => {
-  try {
-    const user = await createUser(req.body);
-    try {
-      const confirmationLink = `http://localhost:3000/verify?userId=${user._id}`
-      await axios.post('http://localhost:3005/api/email/confirmation', {
-        email: user.email,
-        confirmationLink,
-      })
-    } catch (err) {
-      console.error("Erreur envoi email confirmation :", err)
+// router.post('/', async (req, res) => {
+//   try {
+//     const user = await createUser(req.body);
+//     try {
+//       const confirmationLink = `http://localhost:3000/verify?userId=${user._id}`
+//       await axios.post('http://localhost:3005/api/email/confirmation', {
+//         email: user.email,
+//         confirmationLink,
+//       })
+//     } catch (err) {
+//       console.error("Erreur envoi email confirmation :", err)
+//     }
+
+//     res.status(201).json(user);
+//   } catch (err) {
+//     res.status(400).json({ error: err.message });
+//   }
+// });
+
+router.post(
+  '/',
+  [
+    body("email").isEmail().withMessage("Email invalide"),
+    body("first_name").notEmpty().withMessage("Prénom requis"),
+    body("last_name").notEmpty().withMessage("Nom requis"),
+    body("password").isLength({ min: 6 }).withMessage("Mot de passe trop court"),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    try {
+      const user = await createUser(req.body);
+
+      try {
+        const confirmationLink = `http://localhost:3000/verify?userId=${user._id}`;
+        await axios.post('http://localhost:3005/api/email/confirmation', {
+          email: user.email,
+          confirmationLink,
+        });
+      } catch (err) {
+        console.error("Erreur envoi email confirmation :", err);
+      }
+
+      res.status(201).json(user);
+    } catch (err) {
+  console.error("❌ Erreur création user :", err); 
+  console.log("🔥 ERREUR CAPTURÉE DANS ROUTE :", err.message, err.stack);
+  res.status(500).json({
+    error: err.message,
+    stack: err.stack
+  });
+}
+
   }
-});
+);
 
 router.post('/oauth', async (req, res) => {
   try {
@@ -51,6 +92,7 @@ router.post('/oauth', async (req, res) => {
 
     res.status(201).json(user);
   } catch (err) {
+    console.error("Erreur création user oauth :", err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -77,6 +119,7 @@ router.get('/:id', verifyToken, async (req, res) => {
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
     res.json(user);
   } catch (err) {
+    console.error("Erreur getbyemail :", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -91,6 +134,7 @@ router.patch('/:id/preferences', verifyToken, async (req, res) => {
     const user = await updateUserPreferences(req.params.id, req.body);
     res.json(user);
   } catch (err) {
+    console.error("Erreur création user :", err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -111,6 +155,7 @@ router.patch('/subscription/:userId', async (req, res) => {
     await user.save();
     res.json({ message: 'Abonnement mis à jour', subscription: user.subscription });
   } catch (err) {
+    console.error("Erreur user patch subscription:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -124,7 +169,8 @@ router.patch('/:id/verify-email', async (req, res) => {
     await user.save();
 
     res.json({ message: 'Email vérifié avec succès' });
-  } catch (err) {
+  } catch (err) { // eslint-disable-line no-unused-vars
+    console.error("Erreur user patch verify email :", err);
     res.status(500).json({ error: 'Erreur lors de la vérification de l’email' });
   }
 });

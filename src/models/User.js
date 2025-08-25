@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name:  { type: String, required: true },
-  email:      { type: String, required: true, unique: true },
+  email:      { type: String, required: true, unique: true,match: [/.+@.+\..+/, 'Format email invalide'] },
   password:   { type: String }, 
   authType:   { type: String, enum: ['local', 'oauth'], default: 'local' },
   oauthProvider: { type: String, enum: ['google', 'facebook', null], default: null },
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   subscription: {
     type:       { type: String, enum: ['basic', 'premium', 'pro'], default: 'basic' },
     date_start: { type: Date },
-    date_end:   { type: Date },
+    date_end:   { type: Date , default: null},
     status:     { type: String, enum: ['active', 'inactive', 'expired'], default: 'inactive' }
   },
   createdAt: { type: Date, default: Date.now },
