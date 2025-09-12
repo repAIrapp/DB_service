@@ -6,6 +6,6 @@ function parisDateKey(d = new Date()) {
     day: "2-digit",
   }).format(d);
   const [dd, mm, yyyy] = fmt.split('/');
-  return `${yyyy}-${mm}-${dd}`; // "2025-09-11"
+  return `${yyyy}-${mm}-${dd}`; 
 }
 module.exports = { parisDateKey };

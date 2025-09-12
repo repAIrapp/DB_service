@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const AiUsage = require('../models/Usageia');
-const User = require('../models/User'); // ton modèle User déjà existant
-const { parisDateKey } = require('../utils/parisDate'); // à créer juste après
+const User = require('../models/User'); 
+const { parisDateKey } = require('../utils/parisDate'); 
 
 // Quotas par plan
 const QUOTAS = { basic: 5, premium: 100 };
@@ -20,7 +20,7 @@ router.post('/consume', async (req, res) => {
     // Clé journalière Europe/Paris
     const dateKey = parisDateKey();
 
-    // Incrémenter le compteur (créé si pas encore existant)
+    // Incrémenter le compteur 
     const usage = await AiUsage.findOneAndUpdate(
       { userId, date: dateKey },
       { $inc: { count: 1 }, $set: { updatedAt: new Date() } },

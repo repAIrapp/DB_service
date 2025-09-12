@@ -24,10 +24,10 @@ app.use(mongoSanitize());
 app.use(helmet());
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000', // ton front
+  origin: 'http://localhost:3000', 
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
-  credentials: true, // seulement si tu envoies des cookies
+  credentials: true, 
 }));
 app.use('/api/quotas', quotaRoutes);
 // ---- Prometheus metrics
