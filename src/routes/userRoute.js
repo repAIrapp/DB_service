@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const axios = require("axios");
 const { body, validationResult } = require("express-validator");
-
-const {
+const User = require('../models/User'); 
+const { 
   createUser,
   getUserByEmail,
   getUserById,
-  updateUserPreferences
+  updateUserPreferences,
+  updateUserSubscription
 } = require('../services/userService');
 
 const verifyToken = require('../middleware/authMiddleware');
@@ -139,26 +140,45 @@ router.patch('/:id/preferences', verifyToken, async (req, res) => {
   }
 });
 // mettre à jour l'abonnement (appelé après paiement)
+// router.patch('/subscription/:userId', async (req, res) => {
+//   try {
+//     const { type, status, date_start, date_end } = req.body;
+//     const user = await getUserById(req.params.userId);
+//     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
+
+//     user.subscription = {
+//       type: type || user.subscription.type,
+//       status: status || user.subscription.status,
+//       date_start: date_start ? new Date(date_start) : user.subscription.date_start,
+//       date_end: date_end ? new Date(date_end) : user.subscription.date_end,
+//     };
+
+//     await user.save();
+//     res.json({ message: 'Abonnement mis à jour', subscription: user.subscription });
+//   } catch (err) {
+//     console.error("Erreur user patch subscription:", err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+// mettre à jour l'abonnement (appelé après paiement)
 router.patch('/subscription/:userId', async (req, res) => {
   try {
-    const { type, status, date_start, date_end } = req.body;
-    const user = await getUserById(req.params.userId);
+    const { userId } = req.params;
+    const sub = req.body.subscription || req.body;
+
+    const user = await updateUserSubscription(userId, sub);
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
 
-    user.subscription = {
-      type: type || user.subscription.type,
-      status: status || user.subscription.status,
-      date_start: date_start ? new Date(date_start) : user.subscription.date_start,
-      date_end: date_end ? new Date(date_end) : user.subscription.date_end,
-    };
-
-    await user.save();
-    res.json({ message: 'Abonnement mis à jour', subscription: user.subscription });
+    return res.json({
+      message: 'Abonnement mis à jour',
+      subscription: user.subscription
+    });
   } catch (err) {
     console.error("Erreur user patch subscription:", err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
+
 // vérifier l'email après clic sur le lien de confirmation
 router.patch('/:id/verify-email', async (req, res) => {
   try {

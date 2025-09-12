@@ -5,6 +5,8 @@ const client = require("prom-client");
 const router = require("./src/routes/router.js");
 const helmet = require("helmet");
 const mongoSanitize = require('express-mongo-sanitize');
+const quotaRoutes = require('./src/routes/quotas.js');
+
 
 const app = express();
 const rateLimit = require("express-rate-limit");
@@ -21,8 +23,13 @@ app.use(mongoSanitize());
 // Middleware
 app.use(helmet());
 app.use(express.json());
-app.use(cors());
-
+app.use(cors({
+  origin: 'http://localhost:3000', // ton front
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true, // seulement si tu envoies des cookies
+}));
+app.use('/api/quotas', quotaRoutes);
 // ---- Prometheus metrics
 const register = new client.Registry();
 
