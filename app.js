@@ -16,6 +16,10 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limite 100 requêtes par IP
 });
+const allowedOrigins = [
+  'http://localhost:3000',                 // dev local
+  process.env.FRONT_URL                    // domaine Vercel en prod
+];
 app.use(limiter);
 app.use(mongoSanitize());
 
@@ -29,11 +33,6 @@ app.use(express.json());
 //   allowedHeaders: ['Content-Type','Authorization'],
 //   credentials: true, 
 // }));
-const allowedOrigins = [
-  'http://localhost:3000',                 // dev local
-  process.env.FRONT_URL                    // domaine Vercel en prod
-];
-
 app.use(cors({
   origin: allowedOrigins,                  // un tableau est accepté par cors
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
