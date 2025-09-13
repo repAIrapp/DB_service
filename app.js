@@ -29,8 +29,6 @@ app.use(express.json());
 //   allowedHeaders: ['Content-Type','Authorization'],
 //   credentials: true, 
 // }));
-const cors = require('cors');
-
 const allowedOrigins = [
   'http://localhost:3000',                 // dev local
   process.env.FRONT_URL                    // domaine Vercel en prod
