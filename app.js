@@ -23,11 +23,23 @@ app.use(mongoSanitize());
 // Middleware
 app.use(helmet());
 app.use(express.json());
+// app.use(cors({
+//   origin: 'http://localhost:3000', 
+//   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+//   allowedHeaders: ['Content-Type','Authorization'],
+//   credentials: true, 
+// }));
+const cors = require('cors');
+
+const allowedOrigins = [
+  'http://localhost:3000',                 // dev local
+  process.env.FRONT_URL                    // domaine Vercel en prod
+];
+
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: allowedOrigins,                  // un tableau est accepté par cors
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
-  credentials: true, 
+  credentials: true
 }));
 app.use('/api/quotas', quotaRoutes);
 // ---- Prometheus metrics
