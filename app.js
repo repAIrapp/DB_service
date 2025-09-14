@@ -98,7 +98,7 @@ const app = express();
 // --- CORS: origines autorisées
 const allowedOrigins = [
   "http://localhost:3000",
-  process.env.FRONT_URL, // ex: https://front-dun-seven.vercel.app (sans slash final)
+  process.env.FRONTEND_URL, // ex: https://front-dun-seven.vercel.app (sans slash final)
 ];
 
 // Parsers en tout début
